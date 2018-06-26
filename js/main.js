@@ -85,13 +85,66 @@ var resume =  `
 
 * [GitHub](https://github.com/HongTao-Huang)
 * [我的文章](https://hongtao-huang.github.io/)
+* [fork me](https://github.com/HongTao-Huang/js-animation-resume)
 `;
 
-writeStyles('' , result , ()=>{
-    createPaper(()=>{
-      writeContent(resume , ()=>{} )
-    });
+var result2 = `
+  /* 这个简历好像差点什么
+ * 对了，这是 Markdown 格式的，我需要变成对 HR 更友好的格式
+ * 简单，用开源工具翻译成 HTML 就行了
+ */
+`
+
+var result3 = `
+  /* 再对简历加点样式吧*/
+  .editor{
+    white-space : normal;
+    padding : 2em;
+    color : black;
+  }
+
+  .editor > h2{
+    display: inline-block;
+    border-bottom: 1px solid;
+    margin: 1em 0 .5em;
+  }
+
+  .editor > ul , .editor > ol {
+    list-style: none;
+  }
+
+  .editor ul> li::before{
+  content: '•';
+  margin-right: .5em;
+  }
+  .editor ol {
+    counter-reset: section;
+  }
+  .editor ol li::before {
+    counter-increment: section;
+    content: counters(section, ".") " ";
+    margin-right: .5em;
+  }
+  .editor blockquote {
+    margin: 1em;
+    padding: .5em;
+    background: #ddd;
+  }
+`
+
+writeStyles('', result , ()=>{
+  createPaper();
+  writeContent(resume , ()=>{
+    writeStyles(result , result2 , ()=> {
+      addMarkdown();
+       writeStyles(result + result2 , result3 , ()=>{})
+    })
+  })
 })
+
+function addMarkdown(){
+  ele('.editor').innerHTML = marked(ele('.editor').innerHTML);
+}
 
 function ele(selector){
   return document.querySelector(selector);
@@ -126,5 +179,4 @@ function createPaper(fn){
   var paper = document.createElement('pre');
   paper.className = 'editor';
   ele('.code').after(paper);
-  fn.call();
 }
