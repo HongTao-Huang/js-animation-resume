@@ -15,7 +15,7 @@ html{color: rgb(132,26,138); background-color:#C7EDCC;}
   padding : .5em;
   border: 1px solid white;
   margin : 2em;
-  overflow : auto;
+  overflow:-Scroll;overflow-y:hidden;
   height : 90vh;
   width : 50%;
 }
@@ -44,7 +44,7 @@ html{perspective : 1000px}
   margin: 2em;
   padding: .5em;
   border: 1px solid white;
-  overflow: auto;
+  overflow:-Scroll;overflow-y:hidden;
   position: fixed;
   top: 0;
   right: 0;
@@ -103,14 +103,18 @@ var result3 = `
     color : black;
   }
 
-  .editor > h2{
+  .editor h2{
     display: inline-block;
     border-bottom: 1px solid;
     margin: 1em 0 .5em;
   }
 
-  .editor > ul , .editor > ol {
+  .editor ul , .editor ol {
     list-style: none;
+  }
+
+  .editor  a{
+    text-decoration: none;
   }
 
   .editor ul> li::before{
@@ -120,11 +124,13 @@ var result3 = `
   .editor ol {
     counter-reset: section;
   }
+
   .editor ol li::before {
     counter-increment: section;
     content: counters(section, ".") " ";
     margin-right: .5em;
   }
+
   .editor blockquote {
     margin: 1em;
     padding: .5em;
@@ -155,11 +161,12 @@ function writeContent(content , fn){
   var id = setInterval(()=>{
     n += 1;
     ele('.editor').innerHTML = content.substring(0 , n);
+    ele('.editor').scrollTop = ele('.editor').scrollHeight;
     if(n >= content.length){
       window.clearInterval(id);
       fn.call();
     }
-  },1);
+  },50);
 }
 
 function writeStyles(preResult , nowResult , fn){
@@ -168,11 +175,12 @@ function writeStyles(preResult , nowResult , fn){
     n += 1;
     ele('.code').innerHTML = Prism.highlight(preResult + nowResult.substring(0 , n), Prism.languages.css, 'css');
     ele('#styleTag').innerHTML = preResult + nowResult.substring(0 , n);
+    ele('.code').scrollTop = ele('.code').scrollHeight;
     if(n >= nowResult.length){
       window.clearInterval(id);
       fn.call();
     }
-  },1);
+  },50);
 }
 
 function createPaper(fn){
