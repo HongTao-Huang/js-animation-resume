@@ -1,0 +1,9 @@
+*{
+  margin : 0;
+  padding : 0;
+  box-sizing : border-box;
+}
+
+.token.selector,.token.punctuation,.token.property,.token.comment,.token.function{
+	color: rgb(132,26,138);
+}
